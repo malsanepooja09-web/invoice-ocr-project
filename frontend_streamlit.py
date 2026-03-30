@@ -16,8 +16,13 @@ if uploaded_file is not None:
     st.success("✅ PDF Uploaded")
 
     if st.button("Extract Data"):
+        
 
         with st.spinner("Processing... ⏳"):
+            data = extract_invoice_data(uploaded_file)
+            if "raw_text" in data:
+                st.subheader("🔍 OCR RAW TEXT")
+                st.text(data["raw_text"])
 
             data = extract_invoice_data(uploaded_file)
 
