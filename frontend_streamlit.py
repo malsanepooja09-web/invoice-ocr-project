@@ -51,9 +51,9 @@ if uploaded_file is not None:
         with st.spinner("Processing... ⏳"):
             data = extract_invoice_data(uploaded_file)
 
-        # 👇 ALWAYS show (no condition)
-        st.subheader("🔍 OCR RAW TEXT")
-        st.text(data.get("raw_text", "No OCR text found"))
+        # # 👇 ALWAYS show (no condition)
+        # st.subheader("🔍 OCR RAW TEXT")
+        # st.text(data.get("raw_text", "No OCR text found"))
 
         if "error" in data:
             st.error(data["error"])
