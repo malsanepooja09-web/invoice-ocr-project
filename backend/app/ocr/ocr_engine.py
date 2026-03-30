@@ -151,7 +151,8 @@ tesseract_path = os.getenv("TESSERACT_PATH")
 if tesseract_path:
     pytesseract.pytesseract.tesseract_cmd = tesseract_path
 else:
-    pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"  # fallback for deployment
+    # pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"  # fallback for deployment
+    pytesseract.pytesseract.tesseract_cmd = r"D:\Program Files\Tesseract-OCR\tesseract.exe"
 
 # NOW check version (safe)
 try:
