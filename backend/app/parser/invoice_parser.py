@@ -238,27 +238,21 @@
 
 
 import re
-# import re
-
 def extract_total_amount(text):
 
-    # ✅ Case 1: subtotal + tax
-    match = re.search(r'([\d,]+\.\d+).*?IGST.*?([\d,]+\.\d+)', text, re.IGNORECASE)
-
+    # ✅ Find line like: Total 3,805.00] 684.90
+    match = re.search(r'Total[^\d]*([\d,]+\.\d+)[^\d]+([\d,]+\.\d+)', text, re.IGNORECASE)
+    
     if match:
-        try:
-            subtotal = float(match.group(1).replace(',', ''))
-            tax = float(match.group(2).replace(',', ''))
-            return round(subtotal + tax)
-        except:
-            pass
+        taxable = float(match.group(1).replace(',', ''))
+        tax = float(match.group(2).replace(',', ''))
+        return round(taxable + tax)
 
-    # ✅ Case 2: fallback (last big amount)
-    amounts = re.findall(r'[\d,]+\.\d+', text)
-
+    # ✅ fallback → biggest amount
+    amounts = re.findall(r'\d{1,3}(?:,\d{3})*\.\d{2}', text)
     if amounts:
-        values = [float(a.replace(',', '')) for a in amounts]
-        return int(max(values))
+        amounts = [float(a.replace(',', '')) for a in amounts]
+        return round(max(amounts))
 
     return "Not Found"
 
