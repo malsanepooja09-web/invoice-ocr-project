@@ -19,7 +19,7 @@ pytesseract.pytesseract.tesseract_cmd = tesseract_path
 # pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 # pytesseract.pytesseract.tesseract_cmd = r"D:\Program Files\Tesseract-OCR\tesseract.exe"
 # import pytesseract
-print(pytesseract.get_tesseract_version())
+# print(pytesseract.get_tesseract_version())
 
 def extract_text(image_path):
     try:
