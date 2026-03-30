@@ -238,40 +238,25 @@
 
 
 import re
-# import re
-
 def extract_total_amount(text):
 
-    text = text.upper()
+    # ✅ Find line like: Total 3,805.00] 684.90
+    match = re.search(r'Total[^\d]*([\d,]+\.\d+)[^\d]+([\d,]+\.\d+)', text, re.IGNORECASE)
+    
+    if match:
+        taxable = float(match.group(1).replace(',', ''))
+        tax = float(match.group(2).replace(',', ''))
+        return round(taxable + tax)
 
-    lines = text.split("\n")
-
-    for i, line in enumerate(lines):
-        if "IGST" in line:
-
-            # ✅ get tax (last number in IGST line)
-            tax_values = re.findall(r'[\d,]+\.\d{2}', line)
-            if not tax_values:
-                continue
-
-            tax = float(tax_values[-1].replace(',', ''))  # LAST value = correct
-
-            # ✅ get subtotal (previous line)
-            if i > 0:
-                prev_line = lines[i-1]
-                sub_match = re.search(r'([\d,]+\.\d{2})', prev_line)
-
-                if sub_match:
-                    subtotal = float(sub_match.group(1).replace(',', ''))
-                    return round(subtotal + tax)
-
-    # ✅ fallback
-    amounts = re.findall(r'[\d,]+\.\d{2}', text)
+    # ✅ fallback → biggest amount
+    amounts = re.findall(r'\d{1,3}(?:,\d{3})*\.\d{2}', text)
     if amounts:
-        values = [float(a.replace(',', '')) for a in amounts]
-        return int(max(values))
+        amounts = [float(a.replace(',', '')) for a in amounts]
+        return round(max(amounts))
 
     return "Not Found"
+
+
 def parse_invoice(text_lines):
 
 
