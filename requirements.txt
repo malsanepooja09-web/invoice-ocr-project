@@ -3,3 +3,4 @@ pytesseract
 numpy
 pdf2image
 Pillow
+python-dotenv
