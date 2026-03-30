@@ -25,13 +25,10 @@ def extract_invoice_data(uploaded_file):
         for img_path in images:
             text = extract_text(img_path)
             all_text.extend(text)
-            # all_text.append(text)
 
         print("📝 FINAL OCR TEXT:", all_text)
 
         invoice_data = parse_invoice(all_text)
-        invoice_data["raw_text"] = "\n".join(all_text)
-
 
         print("✅ FINAL DATA:", invoice_data)
 
