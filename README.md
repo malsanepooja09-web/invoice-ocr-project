@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿# Invoice_PDF_Upload
 # Invoice PDF Upload & Data Extraction
 
@@ -87,6 +88,10 @@ streamlit run frontend_streamlit.py
 
 ## 👩‍💻 Author
 
-Pratiksha Hole
+Pooja Malsane
 
 
+=======
+# invoice-ocr-project
+Invoice OCR system using Python and Tesseract to extract text and calculate total amount from images.
+>>>>>>> 52ab768ba4fb750f5ca4913146747abe811909c7
