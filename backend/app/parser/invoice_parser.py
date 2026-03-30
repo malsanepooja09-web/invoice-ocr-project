@@ -238,21 +238,27 @@
 
 
 import re
+# import re
+
 def extract_total_amount(text):
 
-    # ✅ Find line like: Total 3,805.00] 684.90
-    match = re.search(r'Total[^\d]*([\d,]+\.\d+)[^\d]+([\d,]+\.\d+)', text, re.IGNORECASE)
-    
-    if match:
-        taxable = float(match.group(1).replace(',', ''))
-        tax = float(match.group(2).replace(',', ''))
-        return round(taxable + tax)
+    # ✅ Case 1: subtotal + tax
+    match = re.search(r'([\d,]+\.\d+).*?IGST.*?([\d,]+\.\d+)', text, re.IGNORECASE)
 
-    # ✅ fallback → biggest amount
-    amounts = re.findall(r'\d{1,3}(?:,\d{3})*\.\d{2}', text)
+    if match:
+        try:
+            subtotal = float(match.group(1).replace(',', ''))
+            tax = float(match.group(2).replace(',', ''))
+            return round(subtotal + tax)
+        except:
+            pass
+
+    # ✅ Case 2: fallback (last big amount)
+    amounts = re.findall(r'[\d,]+\.\d+', text)
+
     if amounts:
-        amounts = [float(a.replace(',', '')) for a in amounts]
-        return round(max(amounts))
+        values = [float(a.replace(',', '')) for a in amounts]
+        return int(max(values))
 
     return "Not Found"
 
@@ -373,4 +379,5 @@ def parse_invoice(text_lines):
         "email": email_match.group() if email_match else "Not Found",
         "phone_number": phone_match.group() if phone_match else "Not Found",
         "total_amount": total_amount
+        
     }
