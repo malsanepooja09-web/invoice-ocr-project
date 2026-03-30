@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual env
+venv/
+
+# Runtime folders
+images/
+uploads/
+
+# Paddle models (IMPORTANT)
+.paddleocr/
+.paddlex/
+
+# Env files
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
