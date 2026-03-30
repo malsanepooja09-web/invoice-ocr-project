@@ -244,36 +244,28 @@ def extract_total_amount(text):
 
     text = text.upper()
 
-    # ✅ Case 1: subtotal + IGST (BEST for your invoice)
-    subtotal_match = re.search(r'\b([\d,]+\.\d{2})\b\s*IGST', text)
-    tax_match = re.search(r'IGST.*?([\d,]+\.\d{2})', text)
-
-    if subtotal_match and tax_match:
-        try:
-            subtotal = float(subtotal_match.group(1).replace(',', ''))
-            tax = float(tax_match.group(1).replace(',', ''))
-            return round(subtotal + tax)
-        except:
-            pass
-
-    # ✅ Case 2: find subtotal above IGST line (more robust)
     lines = text.split("\n")
+
     for i, line in enumerate(lines):
         if "IGST" in line:
+
+            # ✅ get tax (last number in IGST line)
+            tax_values = re.findall(r'[\d,]+\.\d{2}', line)
+            if not tax_values:
+                continue
+
+            tax = float(tax_values[-1].replace(',', ''))  # LAST value = correct
+
+            # ✅ get subtotal (previous line)
             if i > 0:
                 prev_line = lines[i-1]
-                match = re.search(r'([\d,]+\.\d{2})', prev_line)
-                tax_match = re.search(r'([\d,]+\.\d{2})', line)
+                sub_match = re.search(r'([\d,]+\.\d{2})', prev_line)
 
-                if match and tax_match:
-                    try:
-                        subtotal = float(match.group(1).replace(',', ''))
-                        tax = float(tax_match.group(1).replace(',', ''))
-                        return round(subtotal + tax)
-                    except:
-                        pass
+                if sub_match:
+                    subtotal = float(sub_match.group(1).replace(',', ''))
+                    return round(subtotal + tax)
 
-    # ✅ Case 3: fallback → largest amount
+    # ✅ fallback
     amounts = re.findall(r'[\d,]+\.\d{2}', text)
     if amounts:
         values = [float(a.replace(',', '')) for a in amounts]
