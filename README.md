@@ -31,7 +31,7 @@ The system allows users to upload invoice files and automatically extract detail
 Clone the repository:
 
 ```
-git clone https://github.com/holepratiksha29/invoice-extractor.git
+git clone https://github.com/malsanepooja09-web/invoice-ocr-project.git
 ```
 
 Go to project folder:
@@ -88,10 +88,10 @@ streamlit run frontend_streamlit.py
 
 ## 👩‍💻 Author
 
-Pooja Malsane
+Pooja malsane
 
 
-=======
-# invoice-ocr-project
-Invoice OCR system using Python and Tesseract to extract text and calculate total amount from images.
->>>>>>> 52ab768ba4fb750f5ca4913146747abe811909c7
+<!-- ======= -->
+<!-- # invoice-ocr-project -->
+<!-- Invoice OCR system using Python and Tesseract to extract text and calculate total amount from images. -->
+<!-- >>>>>>> 52ab768ba4fb750f5ca4913146747abe811909c7 -->
