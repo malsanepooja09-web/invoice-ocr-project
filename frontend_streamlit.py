@@ -3,15 +3,11 @@ import sys
 # import sys
 import os
 
-# # sys.path.append(os.path.abspath("."))
-# sys.path.append(os.path.abspath("./backend"))
+# sys.path.append(os.path.abspath("."))
 
-# sys.path.append(".")
+sys.path.append(".")
 
-# from backend.app.main import extract_invoice_data
-sys.path.append(os.path.abspath("../backend"))
-from app.main import extract_invoice_data
-
+from backend.app.main import extract_invoice_data
 
 st.set_page_config(page_title="Invoice Extractor", layout="centered")
 
@@ -58,7 +54,7 @@ if uploaded_file is not None:
 
         with st.spinner("Processing... ⏳"):
             data = extract_invoice_data(uploaded_file)
-            st.write("DEBUG DATA:", data)
+            
 
         # # 👇 ALWAYS show (no condition)
         # st.subheader("🔍 OCR RAW TEXT")
