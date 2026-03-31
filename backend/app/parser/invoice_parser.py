@@ -3,29 +3,34 @@ import re
 
 def extract_total_amount(text):
 
-    text_lower = text.lower()
-
-    # ✅ STEP 1: Find all ₹ amounts (most reliable)
-    rupee_matches = re.findall(r'₹\s*([\d,]+\.\d{2})', text)
-
-    if rupee_matches:
-        # 👉 usually LAST ₹ value = final total
-        return int(float(rupee_matches[-1].replace(',', '')))
-
-    # ✅ STEP 2: Find "Total" near amount
     lines = text.split('\n')
 
+    # ✅ STEP 1: Find ₹ amounts (BEST)
+    rupee_matches = re.findall(r'₹\s*([\d,]+\.\d{2})', text)
+    if rupee_matches:
+        return int(float(rupee_matches[-1].replace(',', '')))
+
+    # ✅ STEP 2: Find "Total" block (STRICT)
     for i, line in enumerate(lines):
         if "total" in line.lower():
-            # check current + next 2 lines
-            for j in range(i, min(i+3, len(lines))):
+
+            # check next 5 lines ONLY
+            for j in range(i, min(i+5, len(lines))):
+
+                # skip tax lines
+                if "tax" in lines[j].lower():
+                    continue
+
                 match = re.search(r'([\d,]+\.\d{2})', lines[j])
                 if match:
-                    return int(float(match.group(1).replace(',', '')))
+                    value = float(match.group(1).replace(',', ''))
 
-    # ✅ STEP 3: fallback → max value (safe)
+                    # ignore small values (like 2535, 1270 etc.)
+                    if value > 1000:   # threshold
+                        return int(value)
+
+    # ✅ STEP 3: fallback → max
     amounts = re.findall(r'\d{1,3}(?:,\d{3})*\.\d{2}', text)
-
     if amounts:
         values = [float(a.replace(',', '')) for a in amounts]
         return int(max(values))
