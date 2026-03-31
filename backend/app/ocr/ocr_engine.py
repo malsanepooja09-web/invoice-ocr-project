@@ -164,26 +164,62 @@ except Exception as e:
     print("❌ Tesseract NOT FOUND:", e)
 
 
+# def extract_text(image_path):
+#     try:
+#         print("📄 Processing Image:", image_path)
+
+#         img = Image.open(image_path)
+
+#         # improve OCR
+#         img = img.convert("L")
+#         img = img.filter(ImageFilter.SHARPEN)
+
+#         enhancer = ImageEnhance.Contrast(img)
+#         img = enhancer.enhance(2)
+
+#         text = pytesseract.image_to_string(img, config="--oem 3 --psm 6")
+
+#         print("🔍 OCR RAW TEXT:\n", text)
+
+#         text_list = text.split("\n")
+#         cleaned = [line.strip() for line in text_list if line.strip()]
+
+#         return cleaned
+
+#     except Exception as e:
+#         print("❌ OCR ERROR:", e)
+#         return []
+
 def extract_text(image_path):
     try:
         print("📄 Processing Image:", image_path)
 
         img = Image.open(image_path)
 
-        # improve OCR
-        img = img.convert("L")
-        img = img.filter(ImageFilter.SHARPEN)
+        # ✅ STRONG preprocessing (VERY IMPORTANT)
+        img = img.convert("L")  # grayscale
 
+        # Remove noise
+        img = img.filter(ImageFilter.MedianFilter())
+
+        # Increase contrast
         enhancer = ImageEnhance.Contrast(img)
-        img = enhancer.enhance(2)
+        img = enhancer.enhance(3)
 
-        text = pytesseract.image_to_string(img, config="--oem 3 --psm 6")
+        # Binarization (VERY POWERFUL)
+        img = img.point(lambda x: 0 if x < 140 else 255, '1')
+
+        # OCR
+        text = pytesseract.image_to_string(
+            img,
+            config="--oem 3 --psm 6"
+        )
 
         print("🔍 OCR RAW TEXT:\n", text)
 
-        text_list = text.split("\n")
-        cleaned = [line.strip() for line in text_list if line.strip()]
+        cleaned = [line.strip() for line in text.split("\n") if line.strip()]
 
+        # ✅ DEBUG RETURN
         return cleaned
 
     except Exception as e:
