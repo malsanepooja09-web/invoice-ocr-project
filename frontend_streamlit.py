@@ -3,11 +3,19 @@ import sys
 # import sys
 import os
 
-sys.path.append(os.path.abspath("."))
+# sys.path.append(os.path.abspath("."))
+# sys.path.append(os.path.abspath("./backend"))
+
+
+sys.path.append(os.path.abspath("backend"))
 
 # sys.path.append(".")
 
-from backend.app.main import extract_invoice_data
+# from backend.app.main import extract_invoice_data
+from app.main import extract_invoice_data
+
+
+
 
 st.set_page_config(page_title="Invoice Extractor", layout="centered")
 
