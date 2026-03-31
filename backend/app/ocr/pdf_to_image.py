@@ -82,12 +82,8 @@ def pdf_to_images(pdf_path):
     try:
         print(f"📄 Converting PDF: {pdf_path}")
 
-        # ✅ FORCE poppler path (important for Streamlit)
-        images = convert_from_path(
-            pdf_path,
-            dpi=300,
-            poppler_path="/usr/bin"
-        )
+        # ✅ DO NOT pass poppler_path
+        images = convert_from_path(pdf_path, dpi=300)
 
         paths = []
 
@@ -98,8 +94,7 @@ def pdf_to_images(pdf_path):
             out = os.path.join(IMAGES_DIR, f"{filename}_{i}.png")
 
             img.save(out, "PNG")
-
-            print(f"✅ Saved Image: {out}")   # 🔥 DEBUG
+            print(f"✅ Saved: {out}")
 
             paths.append(out)
 
