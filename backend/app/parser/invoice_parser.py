@@ -1,31 +1,34 @@
 import re
+import re
+
 def extract_total_amount(text):
 
-    # ✅ 1. FINAL TOTAL (₹ symbol)
-    match = re.search(r'₹\s*([\d,]+\.\d+)', text)
-    if match:
-        return round(float(match.group(1).replace(',', '')))
+    text_lower = text.lower()
 
-    # ✅ 2. GRAND TOTAL / TOTAL PAYABLE
-    match = re.search(r'(Grand Total|Total Amount|Total Payable)[^\d]*([\d,]+\.\d+)', text, re.IGNORECASE)
-    if match:
-        return round(float(match.group(2).replace(',', '')))
+    # ✅ STEP 1: Find all ₹ amounts (most reliable)
+    rupee_matches = re.findall(r'₹\s*([\d,]+\.\d{2})', text)
 
-    # ✅ 3. taxable + tax (backup only)
-    match = re.search(r'([\d,]+\.\d+)[^\d]+([\d,]+\.\d+)', text)
-    if match:
-        try:
-            taxable = float(match.group(1).replace(',', ''))
-            tax = float(match.group(2).replace(',', ''))
-            return round(taxable + tax)
-        except:
-            pass
+    if rupee_matches:
+        # 👉 usually LAST ₹ value = final total
+        return int(float(rupee_matches[-1].replace(',', '')))
 
-    # ✅ 4. fallback → max
+    # ✅ STEP 2: Find "Total" near amount
+    lines = text.split('\n')
+
+    for i, line in enumerate(lines):
+        if "total" in line.lower():
+            # check current + next 2 lines
+            for j in range(i, min(i+3, len(lines))):
+                match = re.search(r'([\d,]+\.\d{2})', lines[j])
+                if match:
+                    return int(float(match.group(1).replace(',', '')))
+
+    # ✅ STEP 3: fallback → max value (safe)
     amounts = re.findall(r'\d{1,3}(?:,\d{3})*\.\d{2}', text)
+
     if amounts:
-        amounts = [float(a.replace(',', '')) for a in amounts]
-        return round(max(amounts))
+        values = [float(a.replace(',', '')) for a in amounts]
+        return int(max(values))
 
     return "Not Found"
 
