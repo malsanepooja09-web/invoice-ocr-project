@@ -54,8 +54,8 @@ if uploaded_file is not None:
 
         with st.spinner("Processing... ⏳"):
             data = extract_invoice_data(uploaded_file)
-            st.subheader("🔍 OCR TEXT")
-            st.write(data)
+            # st.subheader("🔍 OCR TEXT")
+            # st.write(data)
             
 
         # # 👇 ALWAYS show (no condition)
