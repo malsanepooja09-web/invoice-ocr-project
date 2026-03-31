@@ -1,7 +1,11 @@
 import streamlit as st
 import sys
+# import sys
+import os
 
-sys.path.append(".")
+sys.path.append(os.path.abspath("."))
+
+# sys.path.append(".")
 
 from backend.app.main import extract_invoice_data
 
@@ -50,6 +54,7 @@ if uploaded_file is not None:
 
         with st.spinner("Processing... ⏳"):
             data = extract_invoice_data(uploaded_file)
+            st.write("DEBUG DATA:", data)
 
         # # 👇 ALWAYS show (no condition)
         # st.subheader("🔍 OCR RAW TEXT")
@@ -60,9 +65,17 @@ if uploaded_file is not None:
         else:
             st.subheader("📊 Extracted Data")
 
-            st.write("Invoice Number:", data["invoice_number"])
-            st.write("Invoice Date:", data["invoice_date"])
-            st.write("Customer Name:", data["customer_name"])
-            st.write("Email:", data["email"])
-            st.write("Phone:", data["phone_number"])
-            st.write("Total Amount:", data["total_amount"])
+            # st.write("Invoice Number:", data["invoice_number"])
+            # st.write("Invoice Date:", data["invoice_date"])
+            # st.write("Customer Name:", data["customer_name"])
+            # st.write("Email:", data["email"])
+            # st.write("Phone:", data["phone_number"])
+            # st.write("Total Amount:", data["total_amount"])
+
+
+            st.write("Invoice Number:", data.get("invoice_number", "Not found"))
+            st.write("Invoice Date:", data.get("invoice_date", "Not found"))
+            st.write("Customer Name:", data.get("customer_name", "Not found"))
+            st.write("Email:", data.get("email", "Not found"))
+            st.write("Phone:", data.get("phone_number", "Not found"))
+            st.write("Total Amount:", data.get("total_amount", "Not found"))
