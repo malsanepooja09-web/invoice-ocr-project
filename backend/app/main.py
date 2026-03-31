@@ -1,10 +1,14 @@
 import os
 
-from backend.app.ocr.pdf_to_image import pdf_to_images
-from backend.app.ocr.ocr_engine import extract_text
-from backend.app.parser.invoice_parser import parse_invoice
+# from backend.app.ocr.pdf_to_image import pdf_to_images
+# from backend.app.ocr.ocr_engine import extract_text
+# from backend.app.parser.invoice_parser import parse_invoice
+from app.ocr.pdf_to_image import pdf_to_images
+from app.ocr.ocr_engine import extract_text
+from app.parser.invoice_parser import parse_invoice
 
-UPLOAD_FOLDER = "uploads"
+# UPLOAD_FOLDER = "uploads"
+UPLOAD_FOLDER = "/tmp/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
