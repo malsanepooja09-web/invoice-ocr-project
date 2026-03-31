@@ -1,18 +1,18 @@
 import re
 def extract_total_amount(text):
 
-    # ✅ Case 1: FINAL TOTAL (₹ 4,490.00)
+    # ✅ 1. FINAL TOTAL (₹ symbol)
     match = re.search(r'₹\s*([\d,]+\.\d+)', text)
     if match:
         return round(float(match.group(1).replace(',', '')))
 
-    # ✅ Case 2: Total line fallback
-    match = re.search(r'Total\s+([\d,]+\.\d+)', text, re.IGNORECASE)
+    # ✅ 2. GRAND TOTAL / TOTAL PAYABLE
+    match = re.search(r'(Grand Total|Total Amount|Total Payable)[^\d]*([\d,]+\.\d+)', text, re.IGNORECASE)
     if match:
-        return round(float(match.group(1).replace(',', '')))
+        return round(float(match.group(2).replace(',', '')))
 
-    # ✅ Case 3: taxable + tax (backup)
-    match = re.search(r'([\d,]+\.\d+)\s+([\d,]+\.\d+)', text)
+    # ✅ 3. taxable + tax (backup only)
+    match = re.search(r'([\d,]+\.\d+)[^\d]+([\d,]+\.\d+)', text)
     if match:
         try:
             taxable = float(match.group(1).replace(',', ''))
@@ -21,7 +21,7 @@ def extract_total_amount(text):
         except:
             pass
 
-    # ✅ Case 4: fallback max
+    # ✅ 4. fallback → max
     amounts = re.findall(r'\d{1,3}(?:,\d{3})*\.\d{2}', text)
     if amounts:
         amounts = [float(a.replace(',', '')) for a in amounts]
