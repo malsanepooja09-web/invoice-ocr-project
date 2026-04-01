@@ -9,13 +9,13 @@ from backend.app.main import extract_invoice_data
 st.set_page_config(page_title="Invoice Extractor", layout="centered")
 
 st.title("📄 Invoice Data Extractor")
-st.markdown("Upload your invoice PDF and extract key details instantly.")
+# st.markdown("Upload your invoice PDF and extract key details instantly.")
 
 uploaded_file = st.file_uploader("📂 Upload Invoice PDF", type=["pdf"])
 
 if uploaded_file is not None:
     st.success("✅ PDF Uploaded Successfully")
-    save_path = os.path.join("data", uploaded_file.name)
+    save_path = os.path.join("Data",uploaded_file.name)
 
     if st.button("🚀 Extract Data"):
 
