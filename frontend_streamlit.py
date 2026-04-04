@@ -5,6 +5,7 @@ import os
 sys.path.append(".")
 
 from backend.app.main import extract_invoice_data
+# from backend.app.main import extract_invoice_data
 
 st.set_page_config(page_title="Invoice Extractor", layout="centered")
 
